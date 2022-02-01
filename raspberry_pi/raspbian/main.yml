@@ -1,0 +1,22 @@
+---
+- name: Main
+  hosts: devbox
+
+  vars_files:
+    - variables/apt-apps.yml
+    - variables/npm-packages.yml
+
+  vars:
+    repositories_path: "{{ ansible_env.HOME }}/dev/"
+
+  tasks:
+    # Git
+    - name: Generate SSH Key
+      import_tasks: tasks/repositories/create_ssh_key.yml
+    
+    - name: Setup Git
+      import_tasks: tasks/repositories/setup_git.yml
+
+    # Update, install apps, update apps, dist upgrade, remove useless packages and remove dependencies no longer required
+    - name: Install APT Packages
+      import_tasks: tasks/installation/install_apt_aps.yml

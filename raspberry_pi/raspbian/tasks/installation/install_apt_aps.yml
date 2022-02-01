@@ -1,0 +1,31 @@
+# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html#examples
+
+- name: apt-get update as a separate step
+  apt:
+    update_cache: yes
+
+- name: Install Apt Apps
+  apt:
+    name: "{{item}}"
+    state: latest
+  with_items: "{{apt_apps}}"
+  ignore_errors: False
+  tags:
+    - apt
+
+- name: Update all packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+
+- name: Upgrade the OS (apt-get dist-upgrade)
+  apt:
+    upgrade: dist
+
+- name: Remove useless packages from the cache
+  apt:
+    autoclean: yes
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes
