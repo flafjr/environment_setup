@@ -119,14 +119,13 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 ## Roadmap
 
 - [X] Setup Git;
-- [ ] Add Zsh / OhMy ZSH;
-- [ ] Add Zsh / OhMy ZSH;
-- [ ] Node:
-    - [ ] Node;
-    - [ ] NVM;
-    - [ ] TypeScript;
-    - [ ] Yarn;
-- [ ] Consider to Add VNC Serverl;
+- [Review sourabhbajaj Mac Setup](https://sourabhbajaj.com/mac-setup/) 
+- [X] Add Zsh / OhMy ZSH;
+- [X] Node:
+    - [X] Node;
+    - [X] NVM;
+    - [X] TypeScript;
+    - [X] Yarn;
 
 See the [open issues](https://github.com/flafjr/environment_setup/issues) for a full list of proposed features (and known issues).
 

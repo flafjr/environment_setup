@@ -1,0 +1,46 @@
+---
+- name: Dev Env Setup Playbook
+  hosts: devbox
+
+  vars_files:
+    # Apps and Extensions
+    - variables/homebrew-apps.yml
+    - variables/npm-packages.yml
+    - variables/vsc-extensions.yml
+
+  vars:
+    maven_path: "{{ ansible_env.HOME }}/dev/tools/maven"
+    email: "YOUR EMAIL HERE"
+
+  tasks:
+    # Git
+    # - name: Generate SSH Key
+    #   import_tasks: tasks/repositories/playground.yml
+
+    # Git
+    - name: Generate SSH Key
+      import_tasks: tasks/repositories/create_ssh_key.yml
+
+    - name: Setup Git
+      import_tasks: tasks/repositories/setup_git.yml
+
+    # Install core applications
+    - name: Install applications
+      import_tasks: tasks/installation/install_applications.yml
+
+    - name: Install NVM, Node and NPM Packages
+      import_tasks: tasks/installation/install_node_nvm_packages.yml
+
+    # Setup development tools
+    - name: Download AWS Coretto Java 8, 11 & 17
+      import_tasks: tasks/dev_tools/download_java.yml
+
+    - name: Setup Maven
+      import_tasks: tasks/dev_tools/setup_maven.yml
+
+    # Customization & misc
+    - name: Install VSCode extensions
+      import_tasks: tasks/customization/customize_vscode.yml
+
+    - name: Setup ZSH Aliases
+      import_tasks: tasks/customization/setup_zsh_aliases.yml

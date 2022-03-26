@@ -1,0 +1,34 @@
+# https://www.freecodecamp.org/news/how-to-configure-your-macos-terminal-with-zsh-like-a-pro-c0ab3f3c1156/
+brew_apps:
+  - node                # https://nodejs.org/en/
+  - nvm                 # https://github.com/nvm-sh/nvm
+  - awscli
+  - gnu-tar             # Needed to extract tar.gz files. Please do not remove
+  - jenv
+  - docker
+  - docker-compose
+  - go
+  - zsh
+  - zsh-completions
+  - terraform
+
+brew_cask_apps:
+  # Core
+  - iterm2
+  - postman
+  - visual-studio-code
+
+  # Backend
+  - intellij-idea      # intellij-idea-ce for community edition
+  - datagrip
+
+  # Useful tools
+  - alfred              # Launcher (similar to Spotlight but better)     - https://www.alfredapp.com/
+  - rectangle           # Window manager                                 - https://github.com/rxhanson/Rectangle
+  - alt-tab             # Windows-like Alt-tab with previews             - https://github.com/lwouis/alt-tab-macos
+  #- flycut             # Clipboard manager                              - https://github.com/TermiT/Flycut - https://github.com/TermiT/Flycut
+  - copyq               # Clipboard manager                              - https://hluk.github.io/CopyQ/
+  - flameshot           # Powerful yet simple to use screenshot software - https://github.com/flameshot-org/flameshot
+  - anaconda            # Package, dependency and environment management - https://docs.conda.io/projects/conda/en/latest/index.html
+  # - karabiner-elements# Keyboard customizer                            - https://karabiner-elements.pqrs.org/
+  # - hammerspoon       # https://www.hammerspoon.org/

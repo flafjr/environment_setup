@@ -1,0 +1,66 @@
+# TODO Make these tasks fully idempotent under a conditional block.
+# https://support.atlassian.com/bitbucket-cloud/docs/set-up-an-ssh-key/
+# https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+
+- name: SSH Setup - Set up file and folder names
+  set_fact:
+    ssh_key_file_name: id_rsa
+    ssh_base_folder: "{{ ansible_env.HOME }}/.ssh"
+
+- name: Create .ssh directory
+  file:
+    path: "{{ssh_base_folder}}" # ~/.ssh
+    state: directory
+
+- name: Check if id_rsa is already created
+  stat:
+    path: "{{ssh_base_folder}}/{{ssh_key_file_name}}"
+  register: id_rsa_exists
+  tags:
+    - git
+
+- name: Check if ssh config file is already created
+  stat:
+    path: "{{ssh_base_folder}}/config"
+  register: ssh_config_exists
+  tags:
+    - git
+
+- name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+  community.crypto.openssh_keypair:
+    path: "{{ssh_base_folder}}/{{ssh_key_file_name}}" # ~/.ssh
+    mode: 0400 # Read-only by current user. Note: The leading 0 tells Ansible the number is an Octal 
+    comment: SSH key
+  when: not id_rsa_exists.stat.exists
+
+- debug:
+    msg: Created an SSH key on "{{ssh_base_folder}}"
+  when: not id_rsa_exists.stat.exists
+
+- name: Enable SSH Agent and ssh-add key
+  shell: eval `ssh-agent`
+
+- name: ssh-add key
+  shell: ssh-add /{{ssh_base_folder}}/{{ssh_key_file_name}}
+  when: not id_rsa_exists.stat.exists
+
+- name: Create SSH config file
+  register: ssh_config_directory
+  copy:
+    dest: "{{ssh_base_folder}}/config" # ~/.ssh/config
+    content: |
+      Host *
+      UseKeychain yes
+    mode: 0600
+  when: not ssh_config_exists.stat.exists # NEW
+
+- name: Get public key's contents
+  command: cat /{{ssh_base_folder}}/{{ssh_key_file_name}}.pub
+  register: public_key_contents
+
+- name: Print public key's contents
+  debug:
+    msg: "{{public_key_contents.stdout | default('Key contents not found')}}"
+
+- pause:
+    prompt: Copy the content of the "msg" (not including quotes) above to your GitHub/BitBucket account's keys. Press ENTER when done

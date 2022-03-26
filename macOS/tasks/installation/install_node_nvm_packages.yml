@@ -1,0 +1,27 @@
+# This step is necessary to make sure NVM runs properly. See https://github.com/nvm-sh/nvm#troubleshooting-on-macos
+- name: "install NVM"
+  shell: >
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+  args:
+    executable: /bin/bash
+    chdir: "{{ ansible_env.HOME }}"
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+
+- name: "install NodeJS"
+  shell: >
+    . {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install {{ item }}
+  args:
+    executable: /bin/bash
+    chdir: "{{ ansible_env.HOME }}"
+    creates: "{{ ansible_env.HOME }}/.nvm/versions/{{ item }}"
+  loop:
+    - node
+
+- name: Install global npm packages
+  npm:
+    name: "{{item}}"
+    global: yes
+    state: present
+  with_items: "{{npm_packages}}"
+  when: ansible_os_family == 'Darwin'
+  ignore_errors: True

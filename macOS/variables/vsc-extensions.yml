@@ -1,0 +1,21 @@
+vsc_extensions:
+  # Essentials
+  - mikestead.dotenv                              # Support for .ENV syntax highlighting
+  - eamodio.gitlens                               # GitLens - better support for Git
+
+  # Optionals
+  - VisualStudioExptTeam.vscodeintellicode        # VSCode Intellicode autocomplete
+  - christian-kohler.path-intellisense            # helps autocomplete paths
+  - christian-kohler.npm-intellisense             # Autocompletes NPM modules/imports
+  - dbaeumer.vscode-eslint                        # ESLint
+  - esbenp.prettier-vscode                        # Prettier - Code Formatter
+
+  # Utils
+  - kkapsner.duplicateselection                  # Ctrl+D line duplication
+  - oderwat.indent-rainbow                       # color for each indentation depth
+  - fabiospampinato.vscode-open-in-finder        # Open in Finder option
+  - redhat.vscode-yaml                           # Yaml
+
+  # Icons and Themes
+  - vscode-icons-team.vscode-icons # Icons for VSCode - https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons
+  - PKief.material-icon-theme      # Material Icon Theme - https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme

@@ -1,0 +1,27 @@
+# Intentionally not looping bc get_url is only idempotent if statically defined
+
+- name: Download Java 8
+  get_url:
+    url: "https://corretto.aws/downloads/latest/amazon-corretto-8-x64-macos-jdk.pkg"
+    dest: "{{ansible_env.HOME}}/Downloads"
+    mode: '0555'
+    force: no
+
+- name: Download Java 11
+  get_url:
+    url: "https://corretto.aws/downloads/latest/amazon-corretto-11-x64-macos-jdk.pkg"
+    dest: "{{ansible_env.HOME}}/Downloads"
+    mode: '0555'
+    force: no
+
+- name: Download Java 17
+  get_url:
+    url: "https://corretto.aws/downloads/latest/amazon-corretto-17-x64-macos-jdk.pkg"
+    dest: "{{ansible_env.HOME}}/Downloads"
+    mode: '0555'
+    force: no
+
+- pause:
+    prompt: "Java 8, 11 and 17 were downloaded in your Downloads folder. Please install them by running the executables (press ENTER to continue)"
+  register: name
+  delegate_to: localhost

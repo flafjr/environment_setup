@@ -1,0 +1,46 @@
+- name: Check if maven directory is already created
+  stat:
+    path: "{{maven_path}}"
+  register: maven_exists
+  tags:
+    - maven
+
+- name: Download Maven
+  get_url:
+    url: "https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz"
+    dest: "{{ansible_env.HOME}}/Downloads/maven.tar.gz"
+    mode: '0555'
+    force: no
+  when: not maven_exists.stat.exists
+
+- name: create maven directory for unarchiving
+  file:
+    path: "{{maven_path}}"
+    state: directory
+  when: not maven_exists.stat.exists
+
+- name: Extract maven tar.gz into mvn folder
+  unarchive:
+    src: "{{ansible_env.HOME}}/Downloads/maven.tar.gz"
+    dest: "{{maven_path}}"
+    extra_opts: [--strip-components=1]
+  when: not maven_exists.stat.exists
+
+- name: Create .m2 folder
+  file:
+      path: "{{ansible_env.HOME}}/.m2"
+      state: directory
+  when: not maven_exists.stat.exists
+
+- name: Create ~/.zprofile file if not exists
+  copy:
+    content: ""
+    dest: "{{ansible_env.HOME}}/.zprofile"
+    force: no
+  when: not maven_exists.stat.exists
+
+- name: Add maven to .zprofile
+  lineinfile:
+    path: "{{ansible_env.HOME}}/.zprofile"
+    line: "export PATH=$PATH:{{maven_path}}/bin"
+  when: not maven_exists.stat.exists

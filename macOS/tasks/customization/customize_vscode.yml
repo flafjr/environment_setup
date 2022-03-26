@@ -1,0 +1,10 @@
+- name: Check if 'code' is in path
+  shell: command -v code >/dev/null 2>&1
+  register: is_code_in_path
+  ignore_errors: yes
+
+- name: Install VSCode Extensions
+  command: code --install-extension {{item}}
+  with_items: "{{vsc_extensions}}"
+  ignore_errors: yes
+  when: is_code_in_path

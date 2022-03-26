@@ -1,0 +1,10 @@
+- name: Check if dev folder is already created
+  stat:
+    path: "{{ansible_env.HOME}}/dev/"
+  register: devFolder
+  tags:
+    - testing
+
+- debug:
+    msg: "Created an SSH key on {{ansible_env.HOME}}/dev/"
+  when: not devFolder.stat.exists

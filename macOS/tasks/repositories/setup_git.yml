@@ -1,0 +1,36 @@
+# Source: https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup
+- name: Setup Git
+  pause:
+    prompt: "What is your email?"
+  register: email
+  delegate_to: localhost
+
+- name: Setup git e-mail
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: "{{ email.user_input }}"
+
+- pause:
+    prompt: "What is your name? (E.g.: Name Lastname)"
+  register: name
+  delegate_to: localhost
+
+- name: Setup git name
+  community.general.git_config:
+    name: user.name
+    scope: global
+    value: "{{ name.user_input }}"
+
+- pause:
+    prompt: "Would you like to make VS Code your default git editor? (yes/no)"
+  register: wantsGitVSCode
+  delegate_to: localhost
+
+- block:
+    - name: Change git's editor to VSCode
+      community.general.git_config:
+        name: core.editor
+        scope: global
+        value: "code --wait"
+  when: wantsGitVSCode | bool

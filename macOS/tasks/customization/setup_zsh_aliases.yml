@@ -1,0 +1,12 @@
+- name: Add Aliases
+  blockinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    block: |
+      # Maven aliases
+      alias mvc="mvn clean generate-sources"
+      alias mvct="mvc && mvn test"
+
+      # Java version switch
+      alias j17="export JAVA_HOME=`/usr/libexec/java_home -v 17`; java -version"
+      alias j11="export JAVA_HOME=`/usr/libexec/java_home -v 11`; java -version"
+      alias j8="export JAVA_HOME=`/usr/libexec/java_home -v 1.8`; java -version"
