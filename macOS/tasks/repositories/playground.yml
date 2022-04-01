@@ -8,3 +8,45 @@
 - debug:
     msg: "Created an SSH key on {{ansible_env.HOME}}/dev/"
   when: not devFolder.stat.exists
+
+- name: Check if ssh config file is already created
+  stat:
+    path: "{{ansible_env.HOME}}/config_new"
+  register: ssh_config_exists_new
+  tags:
+    - git
+
+- name: SSH Setup - Set up file and folder names
+  set_fact:
+    ssh_key_file_name: id_rsa
+    ssh_base_folder: "{{ ansible_env.HOME }}/.ssh_new"
+
+- name: Setup GitHub User
+  pause:
+    prompt: "What is your GitHub User?"
+  register: github_user
+  delegate_to: localhost
+
+- name: Create SSH config file
+  register: ssh_config_directory
+  copy:
+    dest: "{{ansible_env.HOME}}/config_new" # ~/.ssh/config
+    content: |
+      # GitHub
+      Host github.com
+        HostName github.com
+        AddKeysToAgent yes
+        UseKeychain yes
+        PreferredAuthentications publickey
+        User {{github_user.user_input}}
+        IdentityFile "{{ssh_base_folder}}/{{ssh_key_file_name}}"
+
+      # BitBucket
+      Host bitbucket.org
+        HostName bitbucket.org
+        AddKeysToAgent yes
+        UseKeychain yes
+        PreferredAuthentications publickey
+        IdentityFile "{{ssh_base_folder}}/{{ssh_key_file_name}}"
+    mode: 0600
+  when: not ssh_config_exists_new.stat.exists # NEW

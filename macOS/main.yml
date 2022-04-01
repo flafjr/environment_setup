@@ -14,7 +14,7 @@
 
   tasks:
     # Git
-    # - name: Generate SSH Key
+    # - name: Playground to test stuff before push it
     #   import_tasks: tasks/repositories/playground.yml
 
     # Git

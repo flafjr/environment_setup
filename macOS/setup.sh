@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ! [ -x "$(python -v)" ]; then
+if ! [ -x "$(python3 --version)" ]; then
   # Install Python 3
   brew install python
 fi

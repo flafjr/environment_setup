@@ -28,7 +28,7 @@
 
 - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
   community.crypto.openssh_keypair:
-    path: "{{ssh_base_folder}}/{{ssh_key_file_name}}" # ~/.ssh
+    path: "{{ssh_base_folder}}/{{ssh_key_file_name}}"
     mode: 0400 # Read-only by current user. Note: The leading 0 tells Ansible the number is an Octal 
     comment: SSH key
   when: not id_rsa_exists.stat.exists
@@ -42,17 +42,36 @@
 
 - name: ssh-add key
   shell: ssh-add /{{ssh_base_folder}}/{{ssh_key_file_name}}
-  when: not id_rsa_exists.stat.exists
+
+- name: Setup GitHub User
+  pause:
+    prompt: "What is your GitHub User?"
+  register: github_user
+  delegate_to: localhost
 
 - name: Create SSH config file
   register: ssh_config_directory
   copy:
     dest: "{{ssh_base_folder}}/config" # ~/.ssh/config
     content: |
-      Host *
-      UseKeychain yes
+      # GitHub
+      Host github.com
+        HostName github.com
+        AddKeysToAgent yes
+        UseKeychain yes
+        PreferredAuthentications publickey
+        User {{github_user.user_input}}
+        IdentityFile "{{ssh_base_folder}}/{{ssh_key_file_name}}"
+
+      # BitBucket
+      Host bitbucket.org
+        HostName bitbucket.org
+        AddKeysToAgent yes
+        UseKeychain yes
+        PreferredAuthentications publickey
+        IdentityFile "{{ssh_base_folder}}/{{ssh_key_file_name}}"
     mode: 0600
-  when: not ssh_config_exists.stat.exists # NEW
+  when: not ssh_config_exists.stat.exists
 
 - name: Get public key's contents
   command: cat /{{ssh_base_folder}}/{{ssh_key_file_name}}.pub
