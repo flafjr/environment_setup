@@ -1,2 +1,3 @@
 apt_apps:
+  - git
   - visual-studio-code
