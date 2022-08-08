@@ -107,6 +107,13 @@ This is an example of how to list things you need to use the software and how to
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
+## TODO: Pending review:
+https://github.com/manala/ansible-roles
+https://github.com/gantsign/ansible_role_sdkman
+https://www.google.com/search?q=install+sdkman+using+bash+script+no+prompt&rlz=1C5GCEM_enCA998CA999&oq=install+sdkman+using+bash+script+no+pro
+https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh
+https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/zsh-navigation-tools
+https://phoenixnap.com/kb/enable-ssh-raspberry-pi
 ## Usage
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
@@ -119,8 +126,10 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 ## Roadmap
 
 - [X] Setup Git;
-- [Review sourabhbajaj Mac Setup](https://sourabhbajaj.com/mac-setup/) 
+- [X] Review sourabhbajaj Mac Setup (https://sourabhbajaj.com/mac-setup/) 
+- [X] Install Java with Ansible (https://linuxtut.com/en/2f81a595a11781942ebd/)
 - [X] Add Zsh / OhMy ZSH;
+- [X] Using SDKMAN to install Java - https://sdkman.io/jdks#amzn;
 - [X] Node:
     - [X] Node;
     - [X] NVM;

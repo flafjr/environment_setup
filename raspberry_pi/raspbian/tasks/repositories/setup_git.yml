@@ -1,93 +1,15 @@
 # Source: https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup
-# Review
-- name: Read email from git config
-  community.general.git_config:
-    name: user.email
-    scope: global
-  register: user_email
-
-- debug:
-    msg: "Git user.email already defined: {{ user_email.config_value }}"
-  when: user_email.config_value != ""
-
-- name: Setup Git Email
-  pause:
-    prompt: "What is your email?"
-  register: email
-  delegate_to: localhost
-  when: user_email.config_value == ""
-
+# https://docs.ansible.com/ansible/2.6/modules/git_config_module.html
 - name: Setup git e-mail
   community.general.git_config:
     name: user.email
     scope: global
-    value: "{{ email.user_input }}"
-  when: user_email.config_value == ""
-
-- name: Read name from git config
-  community.general.git_config:
-    name: user.name
-    scope: global
-  register: user_name
-
-- debug:
-    msg: "Git user.name already defined: {{ user_name.config_value }}"
-  when: user_name.config_value != ""
-
-- name: Setup Git Name
-  pause:
-    prompt: "What is your name? (E.g.: Name Lastname)"
-  register: name
-  delegate_to: localhost
-  when: user_name.config_value == ""
+    value: "{{ user_email }}"
+  when: user_email_config.config_value == ""
 
 - name: Setup git name
   community.general.git_config:
     name: user.name
     scope: global
-    value: "{{ name.user_input }}"
-  when: user_name.config_value == ""
-
-- name: Read default git editor from git config
-  community.general.git_config:
-    name: core.editor
-    scope: global
-  register: core_editor
-
-- debug:
-    msg: "Git core_editor already defined: {{ core_editor.config_value }}"
-  when: core_editor.config_value != ""
-
-
-###
-- debug:
-    msg: "Git core_editor already defined: {{ core_editor.config_value }}"
-  # when: core_editor.config_value != ""
-
-- debug:
-    msg: "wantsGitVSCode is defined: {{ wantsGitVSCode is defined }}"
-  # when: wantsGitVSCode is defined
-
-##
-
-- name: Setup default git editor
-  pause:
-    prompt: "Would you like to make VS Code your default git editor? (yes/no)"
-  register: wantsGitVSCode
-  delegate_to: localhost
-  when: core_editor.config_value == ""
-
-##
-- debug:
-    msg: "wantsGitVSCode | bool: {{ wantsGitVSCode | bool }}"
-  # when: wantsGitVSCode | bool
-# wantsGitVSCode is defined and wantsGitVSCode != '' and wantsGitVSCode != None
-###
-
-# - block:
-#     - name: Change git's editor to VSCode
-#       community.general.git_config:
-#         name: core.editor
-#         scope: global
-#         value: "code --wait"
-#   when: (core_editor.config_value == "") and (wantsGitVSCode is defined) and (wantsGitVSCode | bool)
+    value: "{{ user_name }}"
+  when: user_name_config.config_value == ""
