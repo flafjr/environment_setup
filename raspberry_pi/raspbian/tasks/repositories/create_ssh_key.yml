@@ -1,7 +1,4 @@
-# TODO Make these tasks fully idempotent under a conditional block.
-# https://support.atlassian.com/bitbucket-cloud/docs/set-up-an-ssh-key/
 # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
-# https://support.atlassian.com/bitbucket-cloud/docs/set-up-an-ssh-key/
 
 - name: SSH Setup - Set up file and folder names
   set_fact:
@@ -39,16 +36,23 @@
   when: not id_rsa_exists.stat.exists
 
 - name: Enable SSH Agent
-  shell: eval `ssh-agent`
+  shell: eval $(ssh-agent)
 
 - name: ssh-add key
   shell: ssh-add /{{ssh_base_folder}}/{{ssh_key_file_name}}
 
-- name: Setup GitHub User
+# GitHub - User
+- name: Setup GitHub user
   pause:
-    prompt: "What is your GitHub User?"
-  register: github_user
+    prompt: "Enter your GitHub User"
+  register: github_user_input
   delegate_to: localhost
+  when: not ssh_config_exists.stat.exists
+
+- name: "GitHub User"
+  set_fact:
+    github_user: "{{ github_user_input.user_input }}"
+  when: not ssh_config_exists.stat.exists
 
 - name: Create SSH config file
   register: ssh_config_directory
@@ -65,7 +69,7 @@
         AddKeysToAgent yes
         UseKeychain yes
         PreferredAuthentications publickey
-        User {{github_user.user_input}}
+        User {{github_user}}
         IdentityFile "{{ssh_base_folder}}/{{ssh_key_file_name}}"
 
       # BitBucket
