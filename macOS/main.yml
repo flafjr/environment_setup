@@ -10,13 +10,12 @@
 
   vars:
     maven_path: "{{ ansible_env.HOME }}/dev/tools/maven"
-    email: "YOUR EMAIL HERE"
 
   tasks:
-    # Git
-    # - name: Playground to test stuff before push it
-    #   import_tasks: tasks/repositories/playground.yml
 
+    - name: Seting up properties
+      import_tasks: tasks/repositories/setup_properties.yml
+    
     # Git
     - name: Generate SSH Key
       import_tasks: tasks/repositories/create_ssh_key.yml
@@ -28,6 +27,10 @@
     - name: Install applications
       import_tasks: tasks/installation/install_applications.yml
 
+    # TODO: Add VNC: 
+    # https://medium.com/@thedyslexiccoder/setting-up-a-vnc-screen-share-on-a-raspberry-pi-and-a-mac-10c1635df5dc#:~:text=Open%20the%20Screen%20Sharing%20App,Click%20Sign%20In!
+    # TODO: Add NVM to Path: 
+    # https://tecadmin.net/install-nvm-macos-with-homebrew/
     - name: Install NVM, Node and NPM Packages
       import_tasks: tasks/installation/install_node_nvm_packages.yml
 

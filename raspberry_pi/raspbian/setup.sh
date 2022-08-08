@@ -1,6 +1,7 @@
 #!/bin/bash
 ANSIBLE_FOUND="$(command -v ansible)"
 OS="$(uname)" #TODO Improve
+# https://phoenixnap.com/kb/enable-ssh-raspberry-pi
 
 if [ "$OS" != "Linux" ];
 then

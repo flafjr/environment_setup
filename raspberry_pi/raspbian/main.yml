@@ -10,13 +10,21 @@
     repositories_path: "{{ ansible_env.HOME }}/dev/"
 
   tasks:
+    - name: Seting up properties
+      import_tasks: tasks/repositories/setup_properties.yml
+
     # Git
-    - name: Generate SSH Key
-      import_tasks: tasks/repositories/create_ssh_key.yml
-    
     - name: Setup Git
       import_tasks: tasks/repositories/setup_git.yml
 
+    - name: Generate SSH Key
+      import_tasks: tasks/repositories/create_ssh_key.yml
+
     # Update, install apps, update apps, dist upgrade, remove useless packages and remove dependencies no longer required
-    - name: Install APT Packages
+    - name: APT Tasks - Update, Upgrade and Install apps.
+      become: yes
+      become_method: sudo
       import_tasks: tasks/installation/install_apt_aps.yml
+
+  # TODO
+  # https://phoenixnap.com/kb/enable-ssh-raspberry-pi
