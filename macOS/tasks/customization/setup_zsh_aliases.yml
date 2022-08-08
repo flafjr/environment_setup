@@ -10,3 +10,16 @@
       alias j17="export JAVA_HOME=`/usr/libexec/java_home -v 17`; java -version"
       alias j11="export JAVA_HOME=`/usr/libexec/java_home -v 11`; java -version"
       alias j8="export JAVA_HOME=`/usr/libexec/java_home -v 1.8`; java -version"
+
+      removecontainers() {
+        docker stop $(docker ps -aq)
+        docker rm $(docker ps -aq)
+      }
+
+      armageddon() {
+          removecontainers
+          docker network prune -f
+          docker rmi -f $(docker images --filter dangling=true -qa)
+          docker volume rm $(docker volume ls --filter dangling=true -q)
+          docker rmi -f $(docker images -qa)
+      }

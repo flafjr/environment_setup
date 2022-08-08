@@ -1,0 +1,53 @@
+# Git - Email
+- name: Read email from git config
+  community.general.git_config:
+    name: user.email
+    scope: global
+  register: user_email_config
+
+- name: Setup Git Email
+  pause:
+    prompt: "What is your email?"
+  register: user_email_input
+  delegate_to: localhost
+  when: user_email_config.config_value == ""
+
+- name: "Set User Email when already configured"
+  set_fact:
+    user_email: "{{ user_email_config.config_value }}"
+  when: user_email_config.config_value != ""
+
+- name: "Set User Email when not configured"
+  set_fact:
+    user_email: "{{ user_email_input.user_input }}"
+  when: user_email_config.config_value == ""
+
+- debug:
+    msg: "Git user.email defined: {{ user_email }}"
+
+# Git - Name
+- name: Read name from git config
+  community.general.git_config:
+    name: user.name
+    scope: global
+  register: user_name_config
+
+- name: Setup Git Name
+  pause:
+    prompt: "What is your name? (E.g.: Name Lastname)"
+  register: user_name_input
+  delegate_to: localhost
+  when: user_name_config.config_value == ""
+
+- name: "Set User Name when already configured"
+  set_fact:
+    user_name: "{{ user_name_config.config_value }}"
+  when: user_name_config.config_value != ""
+
+- name: "Set User Name when not configured"
+  set_fact:
+    user_name: "{{ user_name_input.user_input }}"
+  when: user_name_config.config_value == ""
+
+- debug:
+    msg: "Git user.name defined: {{ user_name }}"
