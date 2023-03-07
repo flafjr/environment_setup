@@ -15,6 +15,10 @@
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
+######## https://levelup.gitconnected.com/essential-iterm2-tweaks-for-developers-216cd807ad7f
+
+https://github.com/geerlingguy/top500-benchmark/blob/master/main.yml
+
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">

@@ -11,21 +11,44 @@
   vars:
     maven_path: "{{ ansible_env.HOME }}/dev/tools/maven"
 
+  vars_prompt:
+    - name: "dry_run"
+      prompt: "Dry run only?"
+      default: yes
+      private: no
+
+    - name: "env"
+      prompt: "Which environment should be targeted?"
+      default: dev
+      private: no
+
   tasks:
+    - name: Dry run summary
+      debug:
+        msg: "Dry run ... {{env}} Exiting"
+      when: dry_run | bool
+
+    - name: common_tasks
+      import_tasks: ../../common/tasks/setup_properties.yml
+      when: dry_run | bool
 
     - name: Seting up properties
       import_tasks: tasks/repositories/setup_properties.yml
+      when: not (dry_run | bool)
     
     # Git
     - name: Generate SSH Key
       import_tasks: tasks/repositories/create_ssh_key.yml
+      when: not (dry_run | bool)
 
     - name: Setup Git
       import_tasks: tasks/repositories/setup_git.yml
+      when: not (dry_run | bool)
 
     # Install core applications
     - name: Install applications
       import_tasks: tasks/installation/install_applications.yml
+      when: not (dry_run | bool)
 
     # TODO: Add VNC: 
     # https://medium.com/@thedyslexiccoder/setting-up-a-vnc-screen-share-on-a-raspberry-pi-and-a-mac-10c1635df5dc#:~:text=Open%20the%20Screen%20Sharing%20App,Click%20Sign%20In!
@@ -33,17 +56,22 @@
     # https://tecadmin.net/install-nvm-macos-with-homebrew/
     - name: Install NVM, Node and NPM Packages
       import_tasks: tasks/installation/install_node_nvm_packages.yml
+      when: not (dry_run | bool)
 
     # Setup development tools
     - name: Download AWS Coretto Java 8, 11 & 17
       import_tasks: tasks/dev_tools/download_java.yml
+      when: not (dry_run | bool)
 
     - name: Setup Maven
       import_tasks: tasks/dev_tools/setup_maven.yml
+      when: not (dry_run | bool)
 
     # Customization & misc
     - name: Install VSCode extensions
       import_tasks: tasks/customization/customize_vscode.yml
+      when: not (dry_run | bool)
 
     - name: Setup ZSH Aliases
-      import_tasks: tasks/customization/setup_zsh_aliases.yml
+      import_tasks: ../../common/customization/setup_zsh_aliases.yml
+      when: not (dry_run | bool)

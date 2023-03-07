@@ -6,25 +6,60 @@
     - variables/apt-apps.yml
     - variables/npm-packages.yml
 
+  # https://docs.ansible.com/ansible/2.9_ja/plugins/lookup/env.html
+  # https://gist.github.com/berkayunal/ccb1c3511f02d41b7654de17bced30b7
+  # https://github.je-labs.com/DevOps/tools/blob/master/playbooks/cleanup_zuul_vms.yaml
+  # https://thepi.io/how-to-run-raspberry-pi-desktop-on-windows-or-macos/
+  # https://roboticsbackend.com/install-raspbian-desktop-on-a-virtual-machine-virtualbox/
+  # https://raspberrytips.com/run-raspberry-in-virtual-machine/
+
   vars:
     repositories_path: "{{ ansible_env.HOME }}/dev/"
 
+  vars_prompt:
+    - name: "dry_run"
+      prompt: "Dry run only?"
+      default: yes
+      private: no
+
+    - name: "env"
+      prompt: "Which environment should be targeted?"
+      default: dev
+      private: no
+
   tasks:
+    - name: Dry run summary
+      debug:
+        msg: "Dry run ... {{env}} Exiting"
+      when: dry_run | bool
+
+    - debug: msg="{{ lookup('env','HOME') }} is an environment variable"
+
+    - debug: msg="{{ lookup('env','FLAVIO') }} is an environment variable - FLAVIO"
+
+    - name: common_tasks
+      import_tasks: ../../common/tasks/setup_properties.yml
+      when: dry_run | bool
+
     - name: Seting up properties
       import_tasks: tasks/repositories/setup_properties.yml
+      when: not (dry_run | bool)
 
     # Git
     - name: Setup Git
       import_tasks: tasks/repositories/setup_git.yml
+      when: not (dry_run | bool)
 
     - name: Generate SSH Key
       import_tasks: tasks/repositories/create_ssh_key.yml
+      when: not (dry_run | bool)
 
     # Update, install apps, update apps, dist upgrade, remove useless packages and remove dependencies no longer required
     - name: APT Tasks - Update, Upgrade and Install apps.
       become: yes
       become_method: sudo
       import_tasks: tasks/installation/install_apt_aps.yml
+      when: not (dry_run | bool)
 
   # TODO
   # https://phoenixnap.com/kb/enable-ssh-raspberry-pi
