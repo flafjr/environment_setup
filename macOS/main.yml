@@ -72,6 +72,10 @@
       import_tasks: tasks/customization/customize_vscode.yml
       when: not (dry_run | bool)
 
+    - name: Setup OhMyZsh
+      import_tasks: tasks/installation/install_ohmyzsh.yml
+      when: not (dry_run | bool)
+
     - name: Setup ZSH Aliases
       import_tasks: ../common/customization/setup_zsh_aliases.yml
       when: not (dry_run | bool)
