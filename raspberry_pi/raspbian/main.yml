@@ -38,7 +38,7 @@
     - debug: msg="{{ lookup('env','FLAVIO') }} is an environment variable - FLAVIO"
 
     - name: common_tasks
-      import_tasks: ../../common/tasks/setup_properties.yml
+      import_tasks: ../common/tasks/setup_properties.yml
       when: dry_run | bool
 
     - name: Seting up properties

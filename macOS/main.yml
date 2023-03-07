@@ -29,7 +29,7 @@
       when: dry_run | bool
 
     - name: common_tasks
-      import_tasks: ../../common/tasks/setup_properties.yml
+      import_tasks: ../common/tasks/setup_properties.yml
       when: dry_run | bool
 
     - name: Seting up properties
@@ -73,5 +73,5 @@
       when: not (dry_run | bool)
 
     - name: Setup ZSH Aliases
-      import_tasks: ../../common/customization/setup_zsh_aliases.yml
+      import_tasks: ../common/customization/setup_zsh_aliases.yml
       when: not (dry_run | bool)
