@@ -1,15 +1,15 @@
-- name: Check if Homebrew is already installed
-  stat:
-    path: /usr/local/bin/brew
-  register: brewBinary
-  tags:
-    - brew
+# - name: Check if Homebrew is already installed
+#   stat:
+#     path: /usr/local/bin/brew
+#   register: brewBinary
+#   tags:
+#     - brew
 
-- name: Install Homebrew
-  script: install-homebrew.sh
-  when: not brewBinary.stat.exists
-  tags:
-    - brew
+# - name: Install Homebrew
+#   script: install-homebrew.sh
+#   when: not brewBinary.stat.exists
+#   tags:
+#     - brew
 
 - name: Install brew cask apps
   homebrew_cask:
