@@ -63,9 +63,10 @@
       import_tasks: tasks/dev_tools/download_java.yml
       when: not (dry_run | bool)
 
-    - name: Setup Maven
-      import_tasks: tasks/dev_tools/setup_maven.yml
-      when: not (dry_run | bool)
+    # FIXME - Need to be reviewed
+    # - name: Setup Maven
+    #   import_tasks: tasks/dev_tools/setup_maven.yml
+    #   when: not (dry_run | bool)
 
     # Customization & misc
     - name: Install VSCode extensions
