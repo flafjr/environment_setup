@@ -23,7 +23,7 @@ brew_cask_apps:
   - datagrip
 
   # Useful tools
-  - alfred              # Launcher (similar to Spotlight but better)     - https://www.alfredapp.com/
+  - raycast              # Extendable launcher (similar to Spotlight but better - https://www.raycast.com/ 
   - rectangle           # Window manager                                 - https://github.com/rxhanson/Rectangle
   - alt-tab             # Windows-like Alt-tab with previews             - https://github.com/lwouis/alt-tab-macos
   #- flycut             # Clipboard manager                              - https://github.com/TermiT/Flycut - https://github.com/TermiT/Flycut
@@ -31,6 +31,5 @@ brew_cask_apps:
   - flameshot           # Powerful yet simple to use screenshot software - https://github.com/flameshot-org/flameshot
   - anaconda            # Package, dependency and environment management - https://docs.conda.io/projects/conda/en/latest/index.html
   # - karabiner-elements# Keyboard customizer                            - https://karabiner-elements.pqrs.org/
-  - hammerspoon       # https://www.hammerspoon.org/
-
+  - hammerspoon         # https://www.hammerspoon.org/
   - megasync            # Sync between your computer and your MEGA Cloud - https://mega.io/desktop

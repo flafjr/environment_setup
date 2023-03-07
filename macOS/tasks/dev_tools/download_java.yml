@@ -1,4 +1,9 @@
-# Intentionally not looping bc get_url is only idempotent if statically defined
+- name: Check if Java is already installed
+  stat:
+    path: /usr/bin/java
+  register: javaBinary
+  tags:
+    - brew
 
 - name: Download Java 8
   get_url:
@@ -6,6 +11,7 @@
     dest: "{{ansible_env.HOME}}/Downloads"
     mode: '0555'
     force: no
+  when: not javaBinary.stat.exists
 
 - name: Download Java 11
   get_url:
@@ -13,6 +19,7 @@
     dest: "{{ansible_env.HOME}}/Downloads"
     mode: '0555'
     force: no
+  when: not javaBinary.stat.exists
 
 - name: Download Java 17
   get_url:
@@ -20,8 +27,10 @@
     dest: "{{ansible_env.HOME}}/Downloads"
     mode: '0555'
     force: no
+  when: not javaBinary.stat.exists
 
 - pause:
     prompt: "Java 8, 11 and 17 were downloaded in your Downloads folder. Please install them by running the executables (press ENTER to continue)"
   register: name
   delegate_to: localhost
+  when: not javaBinary.stat.exists
