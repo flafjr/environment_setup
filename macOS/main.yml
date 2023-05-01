@@ -2,6 +2,32 @@
 - name: Dev Env Setup Playbook
   hosts: devbox
 
+  # https://www.google.com/search?q=dot+files+java+macos+ansible+playbook
+  # FOCUS: https://www.google.com/search?q=dot+files+java+macos+ansible+playbook
+
+  # https://www.atpeaz.com/macos-set-up-for-coding-and-development/
+  # https://medium.com/@gareth.stretton/obsidian-control-from-chrome-1ba27c5ef84b
+  
+  # Purpose: Search vault
+  # Search Engine: Obsidian - Search
+  # Shortcut: obs
+  # URL: obsidian://search?vault=my_vault&query=%s
+
+  # Purpose: Create a new note
+  # Search Engine: Obsidian - Create Note
+  # Shortcut: obn
+  # URL: obsidian://new?vault=my_vault&silent=true&name=%s
+
+  # Purpose: Save a link to a note
+  # Search Engine: Obsidian - Save Link
+  # Shortcut: obl
+  # URL: obsidian://new?vault=my_vault&silent=true&name=Links&append=true&content=%s%0D%0A
+
+  # Purpose: Save a TODO to a note
+  # Search Engine: Obsidian - Save TODO
+  # Shortcut: obn
+  # URL: obsidian://new?vault=my_vault&silent=true&name=TODOs&append=true&content=-%20[%20]%20%s%0D%0A
+
   vars_files:
     # Apps and Extensions
     - variables/homebrew-apps.yml
@@ -10,6 +36,7 @@
 
   vars:
     maven_path: "{{ ansible_env.HOME }}/dev/tools/maven"
+    zshrc_path: "{{ ansible_env.HOME }}/.zshrc"
 
   vars_prompt:
     - name: "dry_run"
@@ -28,9 +55,21 @@
         msg: "Dry run ... {{env}} Exiting"
       when: dry_run | bool
 
+    # https://github.com/asjafjell/ansible/blob/master/work/roles/jenv/tasks/main.yml
+    # https://www.google.com/search?q=java+%22jenv%22+ansible+script
+    - name: Check if string is present
+      shell: grep -q "jenv" {{zshrc_path}}
+      register: grep_zshrc_result
+      changed_when: false
+
+    - name: Execute something if string is found
+      debug:
+        msg: "zshrc_path: {{zshrc_path}}"
+      when: grep_zshrc_result.rc == 0
+
     - name: common_tasks
       import_tasks: ../common/tasks/setup_properties.yml
-      when: dry_run | bool
+      when: not (dry_run | bool)
 
     - name: Seting up properties
       import_tasks: tasks/repositories/setup_properties.yml
@@ -43,6 +82,11 @@
 
     - name: Setup Git
       import_tasks: tasks/repositories/setup_git.yml
+      when: not (dry_run | bool)
+
+    # https://github.com/mark-omarov/dotfiles/blob/main/git/.gitconfig
+    - name: Setup Git Aliases
+      import_tasks: tasks/repositories/setup_git_aliases.yml
       when: not (dry_run | bool)
 
     # Install core applications
@@ -80,3 +124,10 @@
     - name: Setup ZSH Aliases
       import_tasks: ../common/customization/setup_zsh_aliases.yml
       when: not (dry_run | bool)
+
+    # https://medium.com/@gareth.stretton/obsidian-control-from-chrome-1ba27c5ef84b
+    - name: Set URLAllowlist for Obsidian
+      shell: defaults write com.google.Chrome URLAllowlist -array 'obsidian://*'
+      become: yes
+      become_method: sudo
+      become_user: root

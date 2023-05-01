@@ -1,21 +1,45 @@
 vsc_extensions:
   # Essentials
-  - mikestead.dotenv                              # Support for .ENV syntax highlighting
-  - eamodio.gitlens                               # GitLens - better support for Git
+
+  ## Support for .ENV syntax highlighting
+  - mikestead.dotenv
+  ## GitLens - better support for Git
+  - eamodio.gitlens
 
   # Optionals
-  - VisualStudioExptTeam.vscodeintellicode        # VSCode Intellicode autocomplete
-  - christian-kohler.path-intellisense            # helps autocomplete paths
-  - christian-kohler.npm-intellisense             # Autocompletes NPM modules/imports
-  - dbaeumer.vscode-eslint                        # ESLint
-  - esbenp.prettier-vscode                        # Prettier - Code Formatter
+
+  ## VSCode Intellicode autocomplete
+  - VisualStudioExptTeam.vscodeintellicode
+  ## helps autocomplete paths
+  - christian-kohler.path-intellisense
+  ## Autocompletes NPM modules/imports
+  - christian-kohler.npm-intellisense
+  ## ESLint
+  - dbaeumer.vscode-eslint
+  ## Prettier - Code Formatter
+  - esbenp.prettier-vscode
 
   # Utils
-  - kkapsner.duplicateselection                  # Ctrl+D line duplication
-  - oderwat.indent-rainbow                       # color for each indentation depth
-  - fabiospampinato.vscode-open-in-finder        # Open in Finder option
-  - redhat.vscode-yaml                           # Yaml
+
+  ## Ctrl+D line duplication
+  - kkapsner.duplicateselection
+  ## color for each indentation depth
+  - oderwat.indent-rainbow
+  ## Open in Finder option
+  - fabiospampinato.vscode-open-in-finder
+  ## Yaml support
+  - redhat.vscode-yaml
+  ## Code Spell Checker - Spelling checker for source code
+  - streetsidesoftware.code-spell-checker
+  ## https://marketplace.visualstudio.com/items?itemName=GitHub.copilot
+  - GitHub.copilot
 
   # Icons and Themes
-  - vscode-icons-team.vscode-icons # Icons for VSCode - https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons
-  - PKief.material-icon-theme      # Material Icon Theme - https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme
+
+  ## Icons for VSCode - https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons
+  - vscode-icons-team.vscode-icons
+  ## Material Icon Theme
+  - PKief.material-icon-theme
+  
+  # Display import/require package size in the editor
+  - wix.vscode-import-cost
