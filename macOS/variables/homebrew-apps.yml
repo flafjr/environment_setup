@@ -10,6 +10,7 @@ brew_apps:
   - zsh
   - zsh-completions
   - terraform
+  # - tfenv # Terraform version manager - https://github.com/tfutils/tfenv
 
 brew_cask_apps:
   # Core

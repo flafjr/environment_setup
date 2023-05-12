@@ -1,0 +1,17 @@
+- name: My Task
+  debug:
+    msg: "My variable is {{ shell_rc }}"
+
+- name: Add Aliases
+  blockinfile:
+    create: yes
+    path: "{{ shell_rc }}"
+    block: |
+      # Load aliases
+      if [ -f ~/.zsh_aliases ]; then
+        . ~/.zsh_aliases
+      fi
+
+      #JENV CONFIG
+      eval "$(jenv init -)"
+      export PATH="$HOME/.jenv/bin:$HOME/miniconda/bin/conda:$PATH"

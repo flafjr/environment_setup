@@ -37,6 +37,9 @@
   vars:
     maven_path: "{{ ansible_env.HOME }}/dev/tools/maven"
     zshrc_path: "{{ ansible_env.HOME }}/.zshrc"
+    shell_rc: "{{ ansible_env.HOME }}/.zshrc_playground"
+    shell_aliases: "{{ ansible_env.HOME }}/.zsh_aliases_playground"
+    git_config: "{{ ansible_env.HOME }}/.gitconfig"
 
   vars_prompt:
     - name: "dry_run"
@@ -85,8 +88,9 @@
       when: not (dry_run | bool)
 
     # https://github.com/mark-omarov/dotfiles/blob/main/git/.gitconfig
+    # TODO
     - name: Setup Git Aliases
-      import_tasks: tasks/repositories/setup_git_aliases.yml
+      import_tasks: ../common/tasks/setup_git_aliases.yml
       when: not (dry_run | bool)
 
     # Install core applications
@@ -121,8 +125,16 @@
       import_tasks: tasks/installation/install_ohmyzsh.yml
       when: not (dry_run | bool)
 
+    - name: Setup ZSH
+      include_tasks: ../common/customization/setup_sh.yml
+      when: not (dry_run | bool)
+
     - name: Setup ZSH Aliases
-      import_tasks: ../common/customization/setup_zsh_aliases.yml
+      include_tasks: ../common/customization/setup_sh_aliases.yml
+      when: not (dry_run | bool)
+
+    - name: Setup Git Aliases
+      include_tasks: ../common/customization/setup_git_aliases.yml
       when: not (dry_run | bool)
 
     # https://medium.com/@gareth.stretton/obsidian-control-from-chrome-1ba27c5ef84b

@@ -1,0 +1,38 @@
+- name: Add Aliases
+  blockinfile:
+    create: yes
+    path: "{{ shell_aliases }}"
+    block: |
+      # Maven aliases
+      alias mvc="mvn clean generate-sources"
+      alias mvct="mvc && mvn test"
+
+      # Docker
+      removecontainers() {
+        docker stop $(docker ps -aq)
+        docker rm $(docker ps -aq)
+      }
+
+      armageddon() {
+        removecontainers
+        docker network prune -f
+        docker rmi -f $(docker images --filter dangling=true -qa)
+        docker volume rm $(docker volume ls --filter dangling=true -q)
+        docker rmi -f $(docker images -qa)
+      }
+
+      # It will automatically open the git hub on the repository and the branch you are
+      ghOpenRepo(){
+        repo_remote_url="$(git config --get remote.origin.url)"
+        repo=$(echo $repo_remote_url | sed 's/.*:\(.*\)\.git/\1/')
+        branch="$(git symbolic-ref --short HEAD)"
+        open -a /Applications/Google\ Chrome.app "https://github.je-labs.com/$repo/tree/$branch"
+      }
+
+      # It will automatically open chrome on the create pull request page then you just have to check the PR and open it.
+      ghOpenRepo(){
+        repo_remote_url="$(git config --get remote.origin.url)"
+        repo=$(echo $repo_remote_url | sed 's/.*:\(.*\)\.git/\1/')
+        branch="$(git symbolic-ref --short HEAD)"
+        open -a /Applications/Google\ Chrome.app "https://github.je-labs.com/$repo/tree/$branch"
+      }

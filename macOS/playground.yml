@@ -1,0 +1,45 @@
+---
+- name: Playground
+  hosts: devbox
+
+  vars:
+    shell_rc: "{{ ansible_env.HOME }}/.zshrc_playground"
+    shell_aliases: "{{ ansible_env.HOME }}/.zsh_aliases_playground"
+    git_config: "{{ ansible_env.HOME }}/.gitconfig"
+
+  vars_prompt:
+    - name: "dry_run"
+      prompt: "Dry run only?"
+      default: yes
+      private: no
+
+  tasks:
+    - name: Dry run summary
+      debug:
+        msg: "Dry run"
+      when: dry_run | bool
+
+    # https://github.com/asjafjell/ansible/blob/master/work/roles/jenv/tasks/main.yml
+    # https://www.google.com/search?q=java+%22jenv%22+ansible+script
+    # - name: Check if string is present
+    #   shell: grep -q "jenv" {{file_path}}
+    #   register: grep_zshrc_result
+    #   changed_when: false
+
+    # - name: Execute something if string is found
+    #   debug:
+    #     msg: "file_path: {{file_path}}"
+    #   when: grep_zshrc_result.rc == 0
+
+    - name: common_tasks
+      import_tasks: ../common/tasks/setup_properties.yml
+      when: not (dry_run | bool)
+
+    - name: Setup ZSH
+      include_tasks: ../common/customization/setup_sh.yml
+
+    - name: Setup ZSH Aliases
+      include_tasks: ../common/customization/setup_sh_aliases.yml
+
+    - name: Setup Git Aliases
+      include_tasks: ../common/customization/setup_git_aliases.yml

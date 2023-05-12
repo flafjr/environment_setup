@@ -2,6 +2,11 @@
   blockinfile:
     path: "{{ ansible_env.HOME }}/.zshrc"
     block: |
+      # Load aliases
+      if [ -f ~/.zsh_aliases ]; then
+        . ~/.zsh_aliases
+      fi
+
       # Maven aliases
       alias mvc="mvn clean generate-sources"
       alias mvct="mvc && mvn test"
@@ -11,7 +16,6 @@
       alias j11="export JAVA_HOME=`/usr/libexec/java_home -v 11`; java -version"
       alias j8="export JAVA_HOME=`/usr/libexec/java_home -v 1.8`; java -version"
 
-      # Docker
       removecontainers() {
         docker stop $(docker ps -aq)
         docker rm $(docker ps -aq)

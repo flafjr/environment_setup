@@ -61,5 +61,8 @@
       import_tasks: tasks/installation/install_apt_aps.yml
       when: not (dry_run | bool)
 
+    # TODO: Add VNC: 
+    # https://medium.com/@thedyslexiccoder/setting-up-a-vnc-screen-share-on-a-raspberry-pi-and-a-mac-10c1635df5dc#:~:text=Open%20the%20Screen%20Sharing%20App,Click%20Sign%20In!
+
   # TODO
   # https://phoenixnap.com/kb/enable-ssh-raspberry-pi

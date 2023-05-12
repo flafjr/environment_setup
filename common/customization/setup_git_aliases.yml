@@ -1,0 +1,17 @@
+- name: Add git aliases
+  blockinfile:
+    create: yes
+    path: "{{ git_config }}"
+    block: |
+      [init]
+        defaultBranch = main
+      [alias]
+        lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+        pushf = push --force-with-lease
+        addall = add -A
+        ff = pull --ff-only
+        prb = pull --rebase origin
+        rb = rebase origin
+        st = status -sb
+      [push]
+        default = current
