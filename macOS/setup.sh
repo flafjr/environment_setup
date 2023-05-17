@@ -2,13 +2,6 @@
 BREW_FOUND="$(command -v brew)"
 PYTHON3_FOUND="$(command -v python3)"
 ANSIBLE_FOUND="$(command -v ansible)"
-OS="$(uname)"
-
-if [ "$OS" != "Darwin" ];
-then
-  echo "You are not using a MacOS, please check if we have the automation ready for your OS $OSTYPE"
-  exit 1
-fi
 
 if [ -z "$BREW_FOUND" ]
 then
@@ -44,4 +37,5 @@ fi
 
 ansible-galaxy install -r requirements.yml
 
-ansible-playbook -i hosts.ini main.yml
+# https://www.shellhacks.com/ansible-sudo-a-password-is-required/
+ansible-playbook -i hosts.ini main.yml --ask-become-pass

@@ -2,6 +2,9 @@
 - name: Dev Env Setup Playbook
   hosts: devbox
 
+  # TODO: https://www.youtube.com/watch?v=DzNmUNvnB04
+  # REVIEW - https://github.com/dreamsofcode-io/dotfiles/
+  # https://github.com/mark-omarov/dotfiles
   # https://www.google.com/search?q=dot+files+java+macos+ansible+playbook
   # FOCUS: https://www.google.com/search?q=dot+files+java+macos+ansible+playbook
 
@@ -33,24 +36,29 @@
     - variables/homebrew-apps.yml
     - variables/npm-packages.yml
     - variables/vsc-extensions.yml
-
   vars:
     maven_path: "{{ ansible_env.HOME }}/dev/tools/maven"
     zshrc_path: "{{ ansible_env.HOME }}/.zshrc"
     shell_rc: "{{ ansible_env.HOME }}/.zshrc_playground"
     shell_aliases: "{{ ansible_env.HOME }}/.zsh_aliases_playground"
     git_config: "{{ ansible_env.HOME }}/.gitconfig"
-
+    tmux_conf: "{{ ansible_env.HOME }}/.tmux.conf"
+    pam_sudo: "/etc/pam.d/sudo" # Pluggable Authentication Modules 
   vars_prompt:
     - name: "dry_run"
       prompt: "Dry run only?"
       default: yes
       private: no
-
     - name: "env"
       prompt: "Which environment should be targeted?"
       default: dev
       private: no
+
+  pre_tasks:
+    - name: Check OS
+      fail:
+        msg: "This playbook only runs on macOS"
+      when: ansible_distribution != 'MacOSX'
 
   tasks:
     - name: Dry run summary
@@ -60,16 +68,6 @@
 
     # https://github.com/asjafjell/ansible/blob/master/work/roles/jenv/tasks/main.yml
     # https://www.google.com/search?q=java+%22jenv%22+ansible+script
-    - name: Check if string is present
-      shell: grep -q "jenv" {{zshrc_path}}
-      register: grep_zshrc_result
-      changed_when: false
-
-    - name: Execute something if string is found
-      debug:
-        msg: "zshrc_path: {{zshrc_path}}"
-      when: grep_zshrc_result.rc == 0
-
     - name: common_tasks
       import_tasks: ../common/tasks/setup_properties.yml
       when: not (dry_run | bool)
@@ -77,7 +75,7 @@
     - name: Seting up properties
       import_tasks: tasks/repositories/setup_properties.yml
       when: not (dry_run | bool)
-    
+
     # Git
     - name: Generate SSH Key
       import_tasks: tasks/repositories/create_ssh_key.yml
@@ -86,20 +84,12 @@
     - name: Setup Git
       import_tasks: tasks/repositories/setup_git.yml
       when: not (dry_run | bool)
-
-    # https://github.com/mark-omarov/dotfiles/blob/main/git/.gitconfig
-    # TODO
-    - name: Setup Git Aliases
-      import_tasks: ../common/tasks/setup_git_aliases.yml
-      when: not (dry_run | bool)
-
+    
     # Install core applications
     - name: Install applications
       import_tasks: tasks/installation/install_applications.yml
       when: not (dry_run | bool)
 
-    # TODO: Add VNC: 
-    # https://medium.com/@thedyslexiccoder/setting-up-a-vnc-screen-share-on-a-raspberry-pi-and-a-mac-10c1635df5dc#:~:text=Open%20the%20Screen%20Sharing%20App,Click%20Sign%20In!
     # TODO: Add NVM to Path: 
     # https://tecadmin.net/install-nvm-macos-with-homebrew/
     - name: Install NVM, Node and NPM Packages
@@ -137,9 +127,44 @@
       include_tasks: ../common/customization/setup_git_aliases.yml
       when: not (dry_run | bool)
 
+    # TODO Review - https://github.com/suzuki-shunsuke/tmux.conf/blob/master/mac_tmux.conf
+    # https://www.google.com/search?q=tmux+macos+ansible+playbook
+    - name: Setup tmux config
+      include_tasks: ../common/customization/setup_tmux.yml
+      when: not (dry_run | bool)
+
     # https://medium.com/@gareth.stretton/obsidian-control-from-chrome-1ba27c5ef84b
-    - name: Set URLAllowlist for Obsidian
-      shell: defaults write com.google.Chrome URLAllowlist -array 'obsidian://*'
+    # - name: Set URLAllowlist for Obsidian
+    #   shell: defaults write com.google.Chrome URLAllowlist -array 'obsidian://*'
+    #   become: yes
+    #   become_method: sudo
+    #   become_user: root
+  # https://www.middlewareinventory.com/blog/ansible-pre-tasks-and-post-tasks-example/
+  post_tasks:
+    - name: Enable touch authorisation for Sudo
+      ansible.builtin.lineinfile:
+        path: "{{pam_sudo}}"
+        insertafter: 'pam_smartcard'
+        line: 'auth       sufficient     pam_tid.so'
+        state: present
       become: yes
       become_method: sudo
       become_user: root
+
+  #   - name: notify Slack that the servers have been updated 
+  #     tags: slack
+  #     community.general.slack:
+  #       token: aaa
+  #       msg: |
+  #           ### StatusUpdate ###
+  #           – ------------------------------------
+  #           ``
+  #           `Server`: {{ansible_host}}
+  #           `Status`: NodeJS Sample Application installed successfully
+  #           – ------------------------------------
+  #       channel: '#ansible'
+  #       color: good
+  #       username: 'Ansible on {{ inventory_hostname }}'
+  #       link_names: 0
+  #       parse: 'none'
+  #     delegate_to: localhost
