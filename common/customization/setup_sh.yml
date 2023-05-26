@@ -1,17 +1,48 @@
-- name: My Task
-  debug:
-    msg: "My variable is {{ shell_rc }}"
+pre_tasks:
+    - name: Check OS
+      fail:
+        msg: "This playbook only runs on macOS"
+      when: ansible_distribution != 'MacOSX'
+    # This step is necessary to make sure NVM runs properly. See https://github.com/nvm-sh/nvm#troubleshooting-on-macos
+    - name: "Create .zshrc file"
+      file:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        state: touch
+        mode: u=rw,g=r,o=r # User, Group, Others. Setting 644 permissions
 
-- name: Add Aliases
-  blockinfile:
-    create: yes
-    path: "{{ shell_rc }}"
-    block: |
-      # Load aliases
-      if [ -f ~/.zsh_aliases ]; then
-        . ~/.zsh_aliases
-      fi
+tasks:
+  - name: My Task
+    debug:
+      msg: "My variable is {{ shell_rc }}"
 
-      #JENV CONFIG
-      eval "$(jenv init -)"
-      export PATH="$HOME/.jenv/bin:$HOME/miniconda/bin/conda:$PATH"
+  # https://ohmyz.sh/#install
+  - name: "install oh-my-zsh"
+    shell: >
+      curl -o- https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash
+    args:
+      executable: /bin/bash
+      chdir: "{{ ansible_env.HOME }}"
+      creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+
+  - name: Install brew apps
+    homebrew:
+      name: "zsh"
+      state: present
+      update_homebrew: yes
+    ignore_errors: True
+    tags:
+      - brew
+
+  - name: Add Aliases
+    blockinfile:
+      create: yes
+      path: "{{ shell_rc }}"
+      block: |
+        # Load aliases
+        if [ -f ~/.zsh_aliases ]; then
+          . ~/.zsh_aliases
+        fi
+
+        #JENV CONFIG
+        eval "$(jenv init -)"
+        export PATH="$HOME/.jenv/bin:$HOME/miniconda/bin/conda:$PATH"
