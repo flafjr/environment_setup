@@ -1,0 +1,10 @@
+---
+variable1: value1
+variable2: value2
+maven_path: "{{ ansible_env.HOME }}/dev/tools/maven"
+zshrc_path: "{{ ansible_env.HOME }}/.zshrc"
+shell_rc: "{{ ansible_env.HOME }}/.zshrc_playground"
+shell_aliases: "{{ ansible_env.HOME }}/.zsh_aliases_playground"
+git_config: "{{ ansible_env.HOME }}/.gitconfig"
+tmux_conf: "{{ ansible_env.HOME }}/.tmux.conf"
+pam_sudo: "/etc/pam.d/sudo" # Pluggable Authentication Modules 

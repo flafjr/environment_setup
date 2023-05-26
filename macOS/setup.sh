@@ -3,6 +3,11 @@ BREW_FOUND="$(command -v brew)"
 PYTHON3_FOUND="$(command -v python3)"
 ANSIBLE_FOUND="$(command -v ansible)"
 
+# TODO: Check if brew is installed
+# xcode-select --install 
+# /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
 if [ -z "$BREW_FOUND" ]
 then
   echo "BREW NOT FOUND"
@@ -28,9 +33,10 @@ fi
 
 if [ -z "$ANSIBLE_FOUND" ]
 then
+  python3 -m ensurepip --upgrade
   echo "ANSIBLE NOT FOUND"
-  pip3 install --upgrade pip
-  sudo pip3 install ansible
+  pip install --upgrade pip
+  sudo pip install ansible
 else
   echo "ANSIBLE FOUND"
 fi

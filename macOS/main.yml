@@ -2,6 +2,8 @@
 - name: Dev Env Setup Playbook
   hosts: devbox
 
+  # Using STOW - https://opensource.com/article/20/1/configuration-management-stow
+
   # TODO: https://www.youtube.com/watch?v=DzNmUNvnB04
   # REVIEW - https://github.com/dreamsofcode-io/dotfiles/
   # https://github.com/mark-omarov/dotfiles
@@ -30,6 +32,10 @@
   # Search Engine: Obsidian - Save TODO
   # Shortcut: obn
   # URL: obsidian://new?vault=my_vault&silent=true&name=TODOs&append=true&content=-%20[%20]%20%s%0D%0A
+
+  # .gitignore
+  # git config --global core.excludesfile ~/.gitignore
+  # echo .DS_Store >> ~/.gitignore
 
   vars_files:
     # Apps and Extensions

@@ -112,6 +112,7 @@ This is an example of how to list things you need to use the software and how to
 
 <!-- USAGE EXAMPLES -->
 ## TODO: Pending review:
+https://opensource.com/article/20/1/configuration-management-stow
 https://github.com/manala/ansible-roles
 https://github.com/gantsign/ansible_role_sdkman
 https://www.google.com/search?q=install+sdkman+using+bash+script+no+prompt&rlz=1C5GCEM_enCA998CA999&oq=install+sdkman+using+bash+script+no+pro
