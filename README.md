@@ -112,6 +112,8 @@ This is an example of how to list things you need to use the software and how to
 
 <!-- USAGE EXAMPLES -->
 ## TODO: Pending review:
+- TMux - https://waylonwalker.com/tmux-nav-2021/
+
 https://opensource.com/article/20/1/configuration-management-stow
 https://github.com/manala/ansible-roles
 https://github.com/gantsign/ansible_role_sdkman
