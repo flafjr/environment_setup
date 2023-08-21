@@ -13,5 +13,10 @@
         prb = pull --rebase origin
         rb = rebase origin
         st = status -sb
+        set-upstream = \
+          !git branch \
+            --set-upstream-to=origin/`git symbolic-ref --short HEAD`
+
       [push]
         default = current
+        autoSetupRemote = true

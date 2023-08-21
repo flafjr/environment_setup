@@ -7,6 +7,8 @@ ANSIBLE_FOUND="$(command -v ansible)"
 # xcode-select --install 
 # /usr/sbin/softwareupdate --install-rosetta --agree-to-license
 # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# https://opensource.com/article/19/5/python-3-default-mac
+
 
 if [ -z "$BREW_FOUND" ]
 then

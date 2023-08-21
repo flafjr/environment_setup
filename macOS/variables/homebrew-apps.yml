@@ -11,7 +11,8 @@ brew_apps:
   - zsh-completions
   - terraform
   - tmux
-  # - tfenv # Terraform version manager - https://github.com/tfutils/tfenv
+  - pyenv # https://opensource.com/article/19/5/python-3-default-mac
+  - tfenv # Terraform version manager - https://github.com/tfutils/tfenv
 
 brew_cask_apps:
   # Core
@@ -35,3 +36,4 @@ brew_cask_apps:
   # - karabiner-elements# Keyboard customizer                            - https://karabiner-elements.pqrs.org/
   - hammerspoon         # https://www.hammerspoon.org/
   - megasync            # Sync between your computer and your MEGA Cloud - https://mega.io/desktop
+  - utm                 # Virtual machines UI using QEMU - https://getutm.app/
