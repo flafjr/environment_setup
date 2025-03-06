@@ -1,19 +1,42 @@
+# https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/aws/aws.plugin.zsh
+vars:
+  shell_rc: "{{ ansible_env.HOME }}/.zshrc"
+
 pre_tasks:
     - name: Check OS
       fail:
-        msg: "This playbook only runs on macOS"
-      when: ansible_distribution != 'MacOSX'
-    # This step is necessary to make sure NVM runs properly. See https://github.com/nvm-sh/nvm#troubleshooting-on-macos
+        msg: "This playbook doesn't support this OS yet!"
+      when: ansible_distribution not in ['Debian', 'Raspbian', 'MacOSX']
+
     - name: "Create .zshrc file"
       file:
-        path: "{{ ansible_env.HOME }}/.zshrc"
+        path: "{{ shell_rc }}"
         state: touch
-        mode: u=rw,g=r,o=r # User, Group, Others. Setting 644 permissions
+        mode: "0644"
 
 tasks:
-  - name: My Task
+  - name: DEBUG Task
     debug:
       msg: "My variable is {{ shell_rc }}"
+
+  - name: Install ZSH using APT
+    apt:
+      name: zsh
+      state: present
+      update_cache: yes
+    when: ansible_distribution in ['Debian', 'Raspbian']
+    tags:
+      - zsh
+
+  - name: Install ZSH using Homebrew
+    homebrew:
+      name: zsh
+      state: present
+      update_homebrew: yes
+      when: ansible_distribution in ['MacOSX']
+    ignore_errors: True
+    tags:
+      - zsh
 
   # https://ohmyz.sh/#install
   - name: "install oh-my-zsh"
@@ -22,16 +45,7 @@ tasks:
     args:
       executable: /bin/bash
       chdir: "{{ ansible_env.HOME }}"
-      creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
-
-  - name: Install brew apps
-    homebrew:
-      name: "zsh"
-      state: present
-      update_homebrew: yes
-    ignore_errors: True
-    tags:
-      - brew
+      creates: "{{ ansible_env.HOME }}/.oh-my-zsh"
 
   - name: Add Aliases
     blockinfile:

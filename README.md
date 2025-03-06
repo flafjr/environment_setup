@@ -8,6 +8,13 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+
+https://github.com/unixorn/awesome-zsh-plugins?tab=readme-ov-file#plugins
+
+https://www.google.com/search?q=zsh+asp+extension
+
+https://github.com/unixorn/awesome-zsh-plugins
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -18,6 +25,8 @@
 ######## https://levelup.gitconnected.com/essential-iterm2-tweaks-for-developers-216cd807ad7f
 
 https://github.com/geerlingguy/top500-benchmark/blob/master/main.yml
+
+## TODO: https://github.com/jaguililla/dotfiles/blob/master/macosx/aliases
 
 <!-- PROJECT LOGO -->
 <br />
@@ -135,7 +144,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 ## Roadmap
 
 - [X] Setup Git;
-- [X] Review sourabhbajaj Mac Setup (https://sourabhbajaj.com/mac-setup/) 
+- [X] Review sourabhbajaj Mac Setup (https://sourabhbajaj.com/mac-setup/)
 - [X] Install Java with Ansible (https://linuxtut.com/en/2f81a595a11781942ebd/)
 - [X] Add Zsh / OhMy ZSH;
 - [X] Using SDKMAN to install Java - https://sdkman.io/jdks#amzn;

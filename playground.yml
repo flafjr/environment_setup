@@ -1,0 +1,113 @@
+---
+- name: Playground
+  hosts: devbox
+
+  vars:
+    shell_rc: "{{ ansible_env.HOME }}/.zshrc_playground"
+    shell_aliases: "{{ ansible_env.HOME }}/.zsh_aliases_playground"
+    git_config: "{{ ansible_env.HOME }}/.gitconfig"
+    tmux_conf: "{{ ansible_env.HOME }}/.tmux.conf"
+    tmux_plugin_manager: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+
+  vars_files:
+    - ./config_playground.yml
+
+  vars_prompt:
+    - name: "dry_run"
+      prompt: "Dry run only?"
+      default: yes
+      private: no
+
+  pre_tasks:
+    - name: Check OS
+      fail:
+        msg: "This playbook only runs on macOS"
+      when: ansible_distribution != 'MacOSX'
+
+  tasks:
+    - name: Dry run summary
+      debug:
+        msg: "Dry run"
+      when: dry_run | bool
+
+    - name: Dry run summary
+      debug:
+        msg: "Dry run"
+      when: dry_run | bool
+
+    # https://github.com/asjafjell/ansible/blob/master/work/roles/jenv/tasks/main.yml
+    # https://www.google.com/search?q=java+%22jenv%22+ansible+script
+    # - name: Check if string is present
+    #   shell: grep -q "jenv" {{file_path}}
+    #   register: grep_zshrc_result
+    #   changed_when: false
+
+    # - name: Execute something if string is found
+    #   debug:
+    #     msg: "file_path: {{file_path}}"
+    #   when: grep_zshrc_result.rc == 0
+
+    - name: common_tasks
+      import_tasks: ../common/tasks/setup_properties.yml
+      when: not (dry_run | bool)
+
+    - name: Setup ZSH
+      include_tasks: ../common/customization/setup_sh.yml
+      when: not (dry_run | bool)
+
+    - name: Setup ZSH Aliases
+      include_tasks: ../common/customization/setup_sh_aliases.yml
+      when: not (dry_run | bool)
+
+    - name: Setup Git Aliases
+      include_tasks: ../common/customization/setup_git_aliases.yml
+      when: not (dry_run | bool)
+
+    - name: Install brew apps
+      homebrew:
+        name: "tmux"
+        state: present
+        update_homebrew: yes
+      ignore_errors: True
+      tags:
+        - brew
+
+    - name: Clone a repo with separate git directory
+      ansible.builtin.git:
+        repo: https://github.com/tmux-plugins/tpm.git
+        dest: "{{ tmux_plugin_manager }}"
+
+    - name: Setup Git Aliases
+      include_tasks: ../common/customization/setup_tmux.yml
+      when: (dry_run | bool)
+
+    - name: ansible_os_family
+      debug:
+        msg: "ansible_os_family: {{ansible_os_family}}"
+
+    - name: ansible_distribution
+      debug:
+        msg: "ansible_distribution: {{ansible_distribution}}"
+
+    - name: variable1
+      debug:
+        msg: "variable1: {{variable1}}"
+
+    - name: variable2
+      debug:
+        msg: "variable2: {{variable2}}"
+
+    # - name: Set URLAllowlist for Obsidian
+    #   shell: echo "auth sufficient pam_tid.so" >> /etc/pam.d/sudo
+    #   when: ansible_distribution == "Ubuntu"
+    #   become: yes
+    #   become_method: sudo
+    #   become_user: root
+
+    # - name: Ensure the default Apache port is 8080
+    #   lineinfile:
+    #   path: /etc/pam.d/sudo
+    #   regexp: '^Listen '
+    #   insertafter: '^#Listen '
+    #   line: Listen 8080
+    #   when: not (dry_run | bool)

@@ -27,8 +27,11 @@
 - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
   community.crypto.openssh_keypair:
     path: "{{ssh_base_folder}}/{{ssh_key_file_name}}"
-    mode: 0400 # Read-only by current user. Note: The leading 0 tells Ansible the number is an Octal 
+    type: ed25519
+    size: 4096
+    mode: 0400 # Read-only by current user. Note: The leading 0 tells Ansible the number is an Octal
     comment: SSH key
+    state: present
   when: not id_rsa_exists.stat.exists
 
 - debug:

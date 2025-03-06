@@ -5,6 +5,10 @@
     block: |
       [init]
         defaultBranch = main
+      [core]
+        editor = code
+        autocrlf = input
+        mergeoptions = --no-edit
       [alias]
         lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
         pushf = push --force-with-lease
@@ -16,7 +20,6 @@
         set-upstream = \
           !git branch \
             --set-upstream-to=origin/`git symbolic-ref --short HEAD`
-
       [push]
         default = current
         autoSetupRemote = true

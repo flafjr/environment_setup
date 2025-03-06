@@ -1,5 +1,6 @@
 # https://www.freecodecamp.org/news/how-to-configure-your-macos-terminal-with-zsh-like-a-pro-c0ab3f3c1156/
 brew_apps:
+  - colima              # https://github.com/abiosoft/colima - Container runtimes on macOS (and Linux) with minimal setup
   - node                # https://nodejs.org/en/
   - nvm                 # https://github.com/nvm-sh/nvm
   - awscli
@@ -9,24 +10,36 @@ brew_apps:
   - go
   - zsh
   - zsh-completions
+  - # TODO THEME:
+# git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+# echo  ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+#
+#  code ~/.zshrc
+#  cat ~/.p10k.zsh
   - terraform
   - tmux
   - pyenv # https://opensource.com/article/19/5/python-3-default-mac
   - tfenv # Terraform version manager - https://github.com/tfutils/tfenv
+  - dotenvx/brew/dotenvx # a better dotenv–from the creator of `dotenv`
+  - gh # https://github.com/cli/cli
+  - maccy # Lightweight clipboard manager for macOS
+  - bruno # Re-Inventing the API Client - https://www.usebruno.com/
+  - podman # The best free & open source container tools - https://podman.io/
+
 
 brew_cask_apps:
   # Core
   - iterm2
-  - postman
   - visual-studio-code
   - docker
+  - rancher # Kubernetes and container management on the desktop - https://rancherdesktop.io/
 
   # Backend
   - intellij-idea      # intellij-idea-ce for community edition
   - datagrip
 
   # Useful tools
-  - raycast              # Extendable launcher (similar to Spotlight but better - https://www.raycast.com/ 
+  - raycast              # Extendable launcher (similar to Spotlight but better - https://www.raycast.com/
   - rectangle           # Window manager                                 - https://github.com/rxhanson/Rectangle
   - alt-tab             # Windows-like Alt-tab with previews             - https://github.com/lwouis/alt-tab-macos
   #- flycut             # Clipboard manager                              - https://github.com/TermiT/Flycut - https://github.com/TermiT/Flycut
@@ -37,3 +50,4 @@ brew_cask_apps:
   - hammerspoon         # https://www.hammerspoon.org/
   - megasync            # Sync between your computer and your MEGA Cloud - https://mega.io/desktop
   - utm                 # Virtual machines UI using QEMU - https://getutm.app/
+  - podman-desktop      # Podman Desktop

@@ -7,6 +7,20 @@
       alias mvc="mvn clean generate-sources"
       alias mvct="mvc && mvn test"
 
+      # Brew
+      alias brewupg='brew update && brew upgrade && brew upgrade --cask && brew cleanup'
+
+      # Git
+      alias rgitp='rgita pull \;'
+
+      # Example: rgita remote \;
+      alias rgita='find . -type d -name .git -print -execdir git'
+
+      # Example: rgit remote -vv
+      rgit() {
+        rgita "$@" \;
+      }
+
       # Docker
       removecontainers() {
         docker stop $(docker ps -aq)
