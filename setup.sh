@@ -27,6 +27,7 @@ if [ "$OS" = "Darwin" ] && [ -z "$BREW_FOUND" ]; then
   # Install homebrew
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
+  echo "export PATH=${PATH}:/opt/homebrew/bin/brew" >> $HOME/.zprofile
   echo "export HOMEBREW_NO_ANALYTICS=1" >> $HOME/.zprofile
   eval "$(/opt/homebrew/bin/brew shellenv)"
   brew analytics off
@@ -45,13 +46,13 @@ fi
 if [ "$OS" = "Darwin" ] && [ -z "$ANSIBLE_FOUND" ]; then
   python3 -m ensurepip --upgrade
   echo "ANSIBLE NOT FOUND"
-  pip install --upgrade pip
-  sudo pip install ansible
+  pip3 install --upgrade pip
+  sudo pip3 install ansible
 else
   echo "ANSIBLE FOUND"
 fi
 
-# ansible-galaxy install -r requirements.yml
+ansible-galaxy collection install -r requirements.yml --upgrade
 
 # https://www.shellhacks.com/ansible-sudo-a-password-is-required/
-# ansible-playbook -i hosts.ini main.yml --ask-become-pass
+ansible-playbook -i hosts.ini main.yml # --ask-become-pass

@@ -6,5 +6,8 @@
         "esbenp.prettier-vscode",
         "redhat.vscode-yaml",
         "redhat.ansible"
-    ]
+    ],
+    "files.associations": {
+        "*.yml": "ansible"
+  }
 }

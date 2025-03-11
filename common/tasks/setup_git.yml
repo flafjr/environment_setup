@@ -1,0 +1,86 @@
+# Read existing Git github.user
+- name: Read GitHub user from git config
+  community.general.git_config_info:
+    name: github.user
+    scope: global
+  register: git_user_config
+
+- name: Determine if Git user is unset
+  set_fact:
+    is_git_user_unset: "{{ git_user_config.config_value is not defined or git_user_config.config_value == '' }}"
+
+- name: Print GitHub User
+  debug:
+    msg: "GitHub User: {{git_user_config.config_value}}"
+  when: not is_git_user_unset
+
+- name: Setup GitHub User
+  pause:
+    prompt: "Enter your GitHub Username:"
+  register: user_input
+  when: is_git_user_unset
+
+- name: Set GitHub user in Git config
+  community.general.git_config:
+    name: github.user
+    scope: global
+    value: "{{ user_input.user_input }}"
+  when: is_git_user_unset
+
+# Read existing Git user.email
+- name: Read Git user.email from git config
+  community.general.git_config_info:
+    name: user.email
+    scope: global
+  register: git_user_email_config
+
+- name: Determine if Git user.email is unset
+  set_fact:
+    is_git_email_unset: "{{ git_user_email_config.config_value is not defined or git_user_email_config.config_value == '' }}"
+
+- name: Print GitHub Email
+  debug:
+    msg: "GitHub Email: {{git_user_email_config.config_value}}"
+  when: not is_git_email_unset
+
+- name: Setup Git Email
+  pause:
+    prompt: "Enter your GitHub Email:"
+  register: user_email_input
+  when: is_git_email_unset
+
+- name: Set Git user.email in Git config
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: "{{ user_email_input.user_input }}"
+  when: is_git_email_unset
+
+# Read existing Git user.name
+- name: Read Git user.name from git config
+  community.general.git_config_info:
+    name: user.name
+    scope: global
+  register: git_user_name_config
+
+- name: Determine if Git user.name is unset
+  set_fact:
+    is_git_name_unset: "{{ git_user_name_config.config_value is not defined or git_user_name_config.config_value == '' }}"
+
+- name: Print GitHub Name
+  debug:
+    msg: "GitHub Name: {{git_user_name_config.config_value}}"
+  when: not is_git_name_unset
+
+- name: Setup Git Name
+  pause:
+    prompt: "Enter your Git Name (First Last):"
+  register: user_name_input
+  when: is_git_name_unset
+
+- name: Set Git user.name in Git config
+  community.general.git_config:
+    name: user.name
+    scope: global
+    value: "{{ user_name_input.user_input }}"
+  when: is_git_name_unset

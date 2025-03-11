@@ -1,12 +1,11 @@
-# https://www.freecodecamp.org/news/how-to-configure-your-macos-terminal-with-zsh-like-a-pro-c0ab3f3c1156/
 brew_apps:
-  - colima              # https://github.com/abiosoft/colima - Container runtimes on macOS (and Linux) with minimal setup
   - node                # https://nodejs.org/en/
   - nvm                 # https://github.com/nvm-sh/nvm
   - awscli
-  - gnu-tar             # Needed to extract tar.gz files. Please do not remove
+ #- gnu-tar             # Needed to extract tar.gz files. Please do not remove
+  #- colima              # https://github.com/abiosoft/colima - Container runtimes on macOS (and Linux) with minimal setup
   - jenv
-  - docker-compose
+  #- docker-compose
   - go
   - zsh
   - zsh-completions
@@ -16,38 +15,38 @@ brew_apps:
 #
 #  code ~/.zshrc
 #  cat ~/.p10k.zsh
-  - terraform
-  - tmux
+  #- terraform
+  #- tmux
   - pyenv # https://opensource.com/article/19/5/python-3-default-mac
   - tfenv # Terraform version manager - https://github.com/tfutils/tfenv
-  - dotenvx/brew/dotenvx # a better dotenv–from the creator of `dotenv`
+  # - dotenvx/brew/dotenvx # a better dotenv–from the creator of `dotenv`
   - gh # https://github.com/cli/cli
   - maccy # Lightweight clipboard manager for macOS
   - bruno # Re-Inventing the API Client - https://www.usebruno.com/
   - podman # The best free & open source container tools - https://podman.io/
 
-
 brew_cask_apps:
   # Core
   - iterm2
   - visual-studio-code
-  - docker
-  - rancher # Kubernetes and container management on the desktop - https://rancherdesktop.io/
+  #- docker
+  #- rancher # Kubernetes and container management on the desktop - https://rancherdesktop.io/
 
   # Backend
   - intellij-idea      # intellij-idea-ce for community edition
-  - datagrip
+  #- datagrip
 
   # Useful tools
   - raycast              # Extendable launcher (similar to Spotlight but better - https://www.raycast.com/
   - rectangle           # Window manager                                 - https://github.com/rxhanson/Rectangle
   - alt-tab             # Windows-like Alt-tab with previews             - https://github.com/lwouis/alt-tab-macos
   #- flycut             # Clipboard manager                              - https://github.com/TermiT/Flycut - https://github.com/TermiT/Flycut
-  - copyq               # Clipboard manager                              - https://hluk.github.io/CopyQ/
-  - flameshot           # Powerful yet simple to use screenshot software - https://github.com/flameshot-org/flameshot
-  - anaconda            # Package, dependency and environment management - https://docs.conda.io/projects/conda/en/latest/index.html
+  #- copyq               # Clipboard manager                              - https://hluk.github.io/CopyQ/
+  #- flameshot           # Powerful yet simple to use screenshot software - https://github.com/flameshot-org/flameshot
+  #- anaconda            # Package, dependency and environment management - https://docs.conda.io/projects/conda/en/latest/index.html
   # - karabiner-elements# Keyboard customizer                            - https://karabiner-elements.pqrs.org/
   - hammerspoon         # https://www.hammerspoon.org/
   - megasync            # Sync between your computer and your MEGA Cloud - https://mega.io/desktop
-  - utm                 # Virtual machines UI using QEMU - https://getutm.app/
+  #- utm                 # Virtual machines UI using QEMU - https://getutm.app/
   - podman-desktop      # Podman Desktop
+  - caffeine            # Utility that prevents the system from going to sleep

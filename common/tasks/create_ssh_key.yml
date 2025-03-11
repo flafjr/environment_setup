@@ -1,0 +1,91 @@
+# https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+
+- name: SSH Setup - Set up file and folder names
+  set_fact:
+    ssh_key_file_name: id_rsa
+    ssh_base_folder: "{{ ansible_env.HOME }}/.ssh"
+
+- name: Create .ssh directory
+  file:
+    path: "{{ssh_base_folder}}"
+    state: directory
+    mode: '0700'
+
+- name: Check if id_rsa is already created
+  stat:
+    path: "{{ssh_base_folder}}/{{ssh_key_file_name}}"
+  register: id_rsa_exists
+  tags:
+    - git
+
+- name: Check if ssh config file is already created
+  stat:
+    path: "{{ssh_base_folder}}/config"
+  register: ssh_config_exists
+  tags:
+    - git
+
+- name: Generate an OpenSSH keypair
+  community.crypto.openssh_keypair:
+    path: "{{ssh_base_folder}}/{{ssh_key_file_name}}"
+    type: ed25519  # or change to 'rsa' if you want 4096 bits
+    mode: 0400
+    comment: SSH key
+    state: present
+  when: not id_rsa_exists.stat.exists
+
+- debug:
+    msg: "Created an SSH key in {{ssh_base_folder}}"
+  when: not id_rsa_exists.stat.exists
+
+- name: Enable SSH Agent and Add Key
+  shell: |
+    eval $(ssh-agent)
+    ssh-add "{{ssh_base_folder}}/{{ssh_key_file_name}}"
+  args:
+    executable: /bin/bash
+
+# GitHub - User
+- name: Read GitHub username from git config
+  community.general.git_config_info:
+    name: github.user
+    scope: global
+  register: github_user_config
+
+- name: Create SSH config file
+  copy:
+    dest: "{{ssh_base_folder}}/config"
+    content: |
+      Host *
+        UseKeychain yes
+        AddKeysToAgent yes
+
+      # GitHub
+      Host github.com
+        HostName github.com
+        AddKeysToAgent yes
+        UseKeychain yes
+        PreferredAuthentications publickey
+        User {{github_user_config.config_value}}
+        IdentityFile "{{ssh_base_folder}}/{{ssh_key_file_name}}"
+
+      # BitBucket
+      Host bitbucket.org
+        HostName bitbucket.org
+        AddKeysToAgent yes
+        UseKeychain yes
+        PreferredAuthentications publickey
+        IdentityFile "{{ssh_base_folder}}/{{ssh_key_file_name}}"
+    mode: 0600
+  when: not ssh_config_exists.stat.exists
+
+- name: Get public key's contents
+  command: cat "{{ssh_base_folder}}/{{ssh_key_file_name}}.pub"
+  register: public_key_contents
+
+- name: Print public key's contents
+  debug:
+    msg: "{{public_key_contents.stdout | default('Key contents not found')}}"
+
+- pause:
+    prompt: Copy the content of the "msg" (not including quotes) above to your GitHub/BitBucket account's keys. Press ENTER when done
